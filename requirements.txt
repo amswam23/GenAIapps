@@ -1,0 +1,17 @@
+streamlit
+langchain
+faiss-cpu
+openai
+pymupdf
+python-docx
+docx2txt
+beautifulsoup4
+requests
+yt-dlp
+whisper
+tiktoken
+sentence-transformers
+pandas
+chromadb
+ollama
+langchain-ollama

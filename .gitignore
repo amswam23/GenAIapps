@@ -1,0 +1,17 @@
+# Ignore venv and build artifacts
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+dist/
+build/
+.eggs/
+*.egg-info/
+.env
+.DS_Store
+.idea/
+.vscode/
