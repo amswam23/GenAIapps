@@ -5,7 +5,6 @@ from utils.extractors import extract_text_from_file, extract_text_from_url, extr
 from utils.rag_engine import build_vectorstore, retrieve_relevant_chunks
 from utils.chat_model import chat_with_context
 from utils.config import load_model_options
-##os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY", "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")
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 
 
