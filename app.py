@@ -1,19 +1,32 @@
 import streamlit as st
 import os
 import tempfile
+from dotenv import load_dotenv  # Import dotenv to load .env file
 from utils.extractors import extract_text_from_file, extract_text_from_url, extract_text_from_youtube
 from utils.rag_engine import build_vectorstore, retrieve_relevant_chunks
 from utils.chat_model import chat_with_context
 from utils.config import load_model_options
-os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 
+# Load environment variables from .env file
+load_dotenv()
+
+# Load the OpenAI API key securely
+api_key = os.getenv("OPENAI_API_KEY")
+if not api_key:
+    st.error("OpenAI API key is missing. Please set the 'OPENAI_API_KEY' environment variable.")
+else:
+    os.environ["OPENAI_API_KEY"] = api_key
 
 st.set_page_config(page_title="RAG Chatbot", layout="wide")
 st.title("🧠 Universal RAG Chatbot")
 st.caption("Chat with your documents, websites, YouTube videos, or Excel files")
 
 # Sidebar options
-model_choice = st.sidebar.selectbox("Choose LLM", load_model_options())
+try:
+    model_choice = st.sidebar.selectbox("Choose LLM", load_model_options())
+except RuntimeError as e:
+    st.error(f"Error loading model options: {str(e)}")
+
 embedding_choice = st.sidebar.selectbox("Embedding Model", ["OpenAI", "HuggingFace"])
 top_k = st.sidebar.slider("Number of relevant chunks", 2, 10, 4)
 
@@ -92,5 +105,7 @@ if query and "vectorstore" in st.session_state:
             st.markdown("#### 🔍 Sources")
             for i, s in enumerate(relevant_chunks, 1):
                 st.markdown(f"**{i}.** {s[:200]}...")
+    except RuntimeError as e:
+        st.error(f"Model error: {str(e)}")
     except Exception as e:
         st.error(f"Error generating response: {str(e)}")
